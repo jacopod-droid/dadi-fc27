@@ -3,7 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <title>Dadi FC27</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(18, 18, 18, 0.95);
+      border: 2px solid #00ff88;
+      border-radius: 12px;
+      padding: 16px;
+      width: 320px;
+      text-align: center;
+      color: #ffffff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+    }
+
+    h1 {
+      font-size: 1rem;
+      color: #00ff88;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .mode-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      color: #888888;
+      border: 1px solid #333333;
+      padding: 8px 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: #00ff88;
+      color: #121212;
+      border-color: #00ff88;
+    }
+
+    .dice-container {
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #dice-display {
+      font-size: 3.2rem;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    #roll-button {
+      background-color: #00ff88;
+      color: #121212;
+      border: none;
+      width: 100%;
+      padding: 10px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    #roll-button:disabled {
+      background-color: #333333;
+      color: #666666;
+      cursor: not-allowed;
+    }
+
+    .result-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      padding: 10px;
+      min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #result-title {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #00ff88;
+      margin-bottom: 4px;
+    }
+
+    #result-desc {
+      font-size: 0.8rem;
+      color: #cccccc;
+      line-height: 1.2;
+    }
+  </style>
 </head>
 <body>
 
@@ -27,6 +140,79 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    (function() {
+      var currentMode = 'd20';
+
+      var dataD20 = [
+        { min: 1, max: 2, title: "Tensioni nello Spogliatoio", desc: "Il giocatore con l'overall più alto salta per scelta tecnica la prima partita del mese." },
+        { min: 3, max: 4, title: "Stanchezza / Rotazioni", desc: "Alla prima gara del mese schiera titolari almeno 4 riserve (o giocatori <75 overall)." },
+        { min: 5, max: 6, title: "Il Pupillo della Chat", desc: "Sondaggio rapido: la chat sceglie una riserva che giocherà almeno 45 minuti nel mese." },
+        { min: 7, max: 8, title: "Focus Giovani", desc: "Per tutte le gare del mese schiera titolare fisso almeno un Under 21 o Primavera." },
+        { min: 9, max: 12, title: "Spogliatoio Sereno", desc: "Mese tranquillo: nessuna restrizione tattica o di formazione." },
+        { min: 13, max: 14, title: "Modulo dalla Chat", desc: "Il modulo per la partita più importante del mese viene scelto dalla chat in live." },
+        { min: 15, max: 16, title: "Rotazione Obbligatoria", desc: "Tra una partita e l'altra fai almeno 5 cambi nell'undici titolare." },
+        { min: 17, max: 18, title: "Esplosione Primavera", desc: "Promuovi un giovane dal vivaio e dagli almeno una presenza da titolare entro fine mese." },
+        { min: 19, max: 20, title: "Rinnovo Chiave", desc: "Rinnova il contratto al giocatore con più presenze (o dagli la fascia di capitano)." }
+      ];
+
+      var dataD6 = [
+        { min: 1, max: 2, title: "Spinta Cessione / Fair Play", desc: "MERCATO: Il giocatore spinge per la cessione (accetta o max +20%). / INIZIO STAGIONE: Spendi max 50% budget." },
+        { min: 3, max: 4, title: "Trattativa Libera / Standard", desc: "MERCATO: Piena libertà di trattare o rifiutare. / INIZIO STAGIONE: Gestione standard del budget." },
+        { min: 5, max: 6, title: "Amore Maglia / Saldo Zero", desc: "MERCATO: Il giocatore rifiuta l'offerta e resta. / INIZIO STAGIONE: Mercato a Saldo Zero (compri solo se vendi)." }
+      ];
+
+      var btnD20 = document.getElementById('btn-d20');
+      var btnD6 = document.getElementById('btn-d6');
+      var rollBtn = document.getElementById('roll-button');
+      var diceDisplay = document.getElementById('dice-display');
+      var resTitle = document.getElementById('result-title');
+      var resDesc = document.getElementById('result-desc');
+
+      btnD20.addEventListener('click', function() {
+        currentMode = 'd20';
+        btnD20.className = 'tab-btn active';
+        btnD6.className = 'tab-btn';
+        diceDisplay.innerHTML = '?';
+        resTitle.innerHTML = "Modalità D20 Attiva";
+        resDesc.innerHTML = "Clicca su LANCIA DADO per estrarre l'imprevisto.";
+      });
+
+      btnD6.addEventListener('click', function() {
+        currentMode = 'd6';
+        btnD6.className = 'tab-btn active';
+        btnD20.className = 'tab-btn';
+        diceDisplay.innerHTML = '?';
+        resTitle.innerHTML = "Modalità D6 Attiva";
+        resDesc.innerHTML = "Clicca su LANCIA DADO per l'esito mercato/bilancio.";
+      });
+
+      rollBtn.addEventListener('click', function() {
+        rollBtn.disabled = true;
+        var maxVal = currentMode === 'd20' ? 20 : 6;
+        var currentDataset = currentMode === 'd20' ? dataD20 : dataD6;
+
+        var counter = 0;
+        var interval = setInterval(function() {
+          diceDisplay.innerHTML = Math.floor(Math.random() * maxVal) + 1;
+          counter++;
+          if (counter > 8) {
+            clearInterval(interval);
+            var finalVal = Math.floor(Math.random() * maxVal) + 1;
+            diceDisplay.innerHTML = finalVal;
+
+            for (var i = 0; i < currentDataset.length; i++) {
+              if (finalVal >= currentDataset[i].min && finalVal <= currentDataset[i].max) {
+                resTitle.innerHTML = "[" + finalVal + "] " + currentDataset[i].title;
+                resDesc.innerHTML = currentDataset[i].desc;
+                break;
+              }
+            }
+            rollBtn.disabled = false;
+          }
+        }, 50);
+      });
+    })();
+  </script>
 </body>
 </html>
