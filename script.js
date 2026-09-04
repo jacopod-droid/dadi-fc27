@@ -1,47 +1,102 @@
-const imprevisti = [
-  // Fascia 1 - 4
-  { range: [1, 2], title: "Tensioni nello Spogliatoio", desc: "Il tuo giocatore con l'overall più alto salta per scelta tecnica la prima partita del mese." },
-  { range: [3, 4], title: "Stanchezza / Rotazioni", desc: "Alla prima gara del mese devi schierare titolari almeno 4 riserve (o <75 overall)." },
-  
-  // Fascia 5 - 8
-  { range: [5, 6], title: "Il Pupillo della Chat", desc: "Sondaggio rapido: la chat sceglie una riserva che giocherà almeno 45 minuti nel mese." },
-  { range: [7, 8], title: "Focus Giovani", desc: "Per tutte le gare del mese schiera titolare fisso almeno un U21 o Primavera." },
-  
-  // Fascia 9 - 12
-  { range: [9, 12], title: "Spogliatoio Sereno", desc: "Mese tranquillo: nessuna restrizione tattica o di formazione." },
-  
-  // Fascia 13 - 16
-  { range: [13, 14], title: "Modulo dalla Chat", desc: "Il modulo per la partita più importante del mese viene scelto dalla chat in live." },
-  { range: [15, 16], title: "Rotazione Obbligatoria", desc: "Tra una partita e l'altra fai almeno 5 cambi nell'undici titolare." },
-  
-  // Fascia 17 - 20
-  { range: [17, 18], title: "Esplosione Primavera", desc: "Promuovi un giovane dal vivaio e dagli almeno una presenza da titolare entro fine mese." },
-  { range: [19, 20], title: "Rinnovo Chiave", desc: "Rinnova il contratto al giocatore con più presenze (o dagli la fascia di capitano)." }
-];
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
-function rollD20() {
-  const diceDisplay = document.getElementById('dice-display');
-  const btn = document.getElementById('roll-btn');
-  const titleEl = document.getElementById('title');
-  const descEl = document.getElementById('description');
+.card {
+  background: rgba(20, 20, 20, 0.95);
+  border: 2px solid #00ff88;
+  border-radius: 16px;
+  padding: 20px;
+  width: 380px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
 
-  btn.disabled = true;
-  diceDisplay.classList.add('rolling');
-  
-  // Simulazione animazione di roll (1 secondo)
-  setTimeout(() => {
-    const rolledValue = Math.floor(Math.random() * 20) + 1;
-    diceDisplay.classList.remove('rolling');
-    diceDisplay.innerText = rolledValue;
+h1 {
+  font-size: 1.1rem;
+  color: #00ff88;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
 
-    // Trova l'imprevisto corrispondente al numero estratto
-    const risultato = imprevisti.find(item => rolledValue >= item.range[0] && rolledValue <= item.range[1]);
+.mode-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
 
-    if (risultato) {
-      titleEl.innerText = `[${rolledValue}] ${risultato.title}`;
-      descEl.innerText = risultato.desc;
-    }
+.tab-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid #00ff88;
+  padding: 8px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-    btn.disabled = false;
-  }, 800);
+.tab-btn.active {
+  background: #00ff88;
+  color: #101010;
+  font-weight: bold;
+}
+
+#dice-display {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #fff;
+}
+
+.rolling {
+  animation: spin 0.4s infinite linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1.2); }
+}
+
+#roll-btn {
+  background-color: #00ff88;
+  color: #101010;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+#roll-btn:hover {
+  background-color: #00cc66;
+}
+
+#result-box {
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 8px;
+  min-height: 75px;
+}
+
+#title {
+  font-size: 1.05rem;
+  margin: 0 0 6px 0;
+  color: #00ff88;
+}
+
+#description {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #dddddd;
 }
