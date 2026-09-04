@@ -5,82 +5,65 @@
 }
 
 body {
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: transparent; /*Trasparente per OBS*/
+  font-family: Arial, sans-serif;
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  overflow: hidden;
 }
 
 .card {
   background: rgba(18, 18, 18, 0.95);
   border: 2px solid #00ff88;
-  border-radius: 16px;
-  padding: 20px;
-  width: 360px;
+  border-radius: 12px;
+  padding: 16px;
+  width: 320px;
   text-align: center;
   color: #ffffff;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
 }
 
-.card-header h1 {
-  font-size: 1.1rem;
+h1 {
+  font-size: 1rem;
   color: #00ff88;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
-  text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 .mode-selector {
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .tab-btn {
   flex: 1;
-  background: rgba(255, 255, 255, 0.08);
-  color: #aaaaaa;
+  background: rgba(255, 255, 255, 0.1);
+  color: #888888;
   border: 1px solid #333333;
-  padding: 10px 5px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 8px;
+  padding: 8px 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 .tab-btn.active {
   background: #00ff88;
   color: #121212;
   border-color: #00ff88;
-  font-weight: 700;
 }
 
 .dice-container {
-  height: 90px;
+  height: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5px 0;
 }
 
 #dice-display {
-  font-size: 3.8rem;
-  font-weight: 800;
+  font-size: 3.2rem;
+  font-weight: bold;
   color: #ffffff;
-}
-
-.animating {
-  animation: rollAnimation 0.5s infinite linear;
-}
-
-@keyframes rollAnimation {
-  0% { transform: rotate(0deg) scale(1.1); }
-  50% { transform: rotate(180deg) scale(1.2); }
-  100% { transform: rotate(360deg) scale(1.1); }
 }
 
 #roll-button {
@@ -88,46 +71,35 @@ body {
   color: #121212;
   border: none;
   width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: 800;
-  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 15px;
-}
-
-#roll-button:hover {
-  background-color: #00cc66;
+  margin-bottom: 12px;
 }
 
 #roll-button:disabled {
-  background-color: #444444;
-  color: #888888;
-  cursor: not-allowed;
+  background-color: #333333;
+  color: #666666;
 }
 
 .result-container {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 12px;
-  min-height: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 10px;
+  min-height: 70px;
 }
 
-.title-text {
-  font-size: 1rem;
-  font-weight: 700;
+#result-title {
+  font-size: 0.9rem;
+  font-weight: bold;
   color: #00ff88;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
-.desc-text {
-  font-size: 0.85rem;
-  color: #dddddd;
-  line-height: 1.3;
+#result-desc {
+  font-size: 0.8rem;
+  color: #cccccc;
+  line-height: 1.2;
 }
