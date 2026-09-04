@@ -7,15 +7,21 @@
 </head>
 <body>
   <div class="card">
-    <h1>FC27 - D20 IMPREVISTI</h1>
+    <h1>FC27 - GENERATORE DADI</h1>
     
+    <!-- Selettore modalità -->
+    <div class="mode-selector">
+      <button id="tab-d20" class="tab-btn active" onclick="switchTab('d20')">D20 (Mensile)</button>
+      <button id="tab-d6" class="tab-btn" onclick="switchTab('d6')">D6 (Mercato)</button>
+    </div>
+
     <div id="dice-display">?</div>
     
-    <button id="roll-btn" onclick="rollD20()">LANCIADADO</button>
+    <button id="roll-btn" onclick="rollCurrentDice()">LANCIA DADO</button>
     
     <div id="result-box">
-      <h2 id="title">Premi il pulsante per lanciare</h2>
-      <p id="description">L'imprevisto mensile comparirà qui.</p>
+      <h2 id="title">Seleziona e lancia</h2>
+      <p id="description">L'esito comparirà qui.</p>
     </div>
   </div>
 
