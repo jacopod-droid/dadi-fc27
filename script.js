@@ -1,102 +1,72 @@
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+let currentDiceMode = 'd20';
+
+const databaseD20 = [
+  { min: 1, max: 2, title: "Tensioni nello Spogliatoio", desc: "Il giocatore con l'overall più alto salta per scelta tecnica la prima partita del mese." },
+  { min: 3, max: 4, title: "Stanchezza / Rotazioni", desc: "Alla prima gara del mese schiera titolari almeno 4 riserve (o giocatori <75 overall)." },
+  { min: 5, max: 6, title: "Il Pupillo della Chat", desc: "Sondaggio rapido: la chat sceglie una riserva che giocherà almeno 45 minuti nel mese." },
+  { min: 7, max: 8, title: "Focus Giovani", desc: "Per tutte le gare del mese schiera titolare fisso almeno un Under 21 o Primavera." },
+  { min: 9, max: 12, title: "Spogliatoio Sereno", desc: "Mese tranquillo: nessuna restrizione tattica o di formazione." },
+  { min: 13, max: 14, title: "Modulo dalla Chat", desc: "Il modulo per la partita più importante del mese viene scelto dalla chat in live." },
+  { min: 15, max: 16, title: "Rotazione Obbligatoria", desc: "Tra una partita e l'altra fai almeno 5 cambi nell'undici titolare." },
+  { min: 17, max: 18, title: "Esplosione Primavera", desc: "Promuovi un giovane dal vivaio e dagli almeno una presenza da titolare entro fine mese." },
+  { min: 19, max: 20, title: "Rinnovo Chiave", desc: "Rinnova il contratto al giocatore con più presenze (o dagli la fascia di capitano)." }
+];
+
+const databaseD6 = [
+  { min: 1, max: 2, title: "Spinta Cessione / Fair Play", desc: "MERCATO: Il giocatore spinge per la cessione (accetta o max +20%). / INIZIO STAGIONE: Spendi max 50% budget." },
+  { min: 3, max: 4, title: "Trattativa Libera / Standard", desc: "MERCATO: Piena libertà di trattare o rifiutare. / INIZIO STAGIONE: Gestione standard del budget." },
+  { min: 5, max: 6, title: "Amore Maglia / Saldo Zero", desc: "MERCATO: Il giocatore rifiuta l'offerta e resta. / INIZIO STAGIONE: Mercato a Saldo Zero (compri solo se vendi)." }
+];
+
+function setMode(mode) {
+  currentDiceMode = mode;
+  
+  const btnD20 = document.getElementById('btn-mode-d20');
+  const btnD6 = document.getElementById('btn-mode-d6');
+  const titleDisplay = document.getElementById('result-title');
+  const descDisplay = document.getElementById('result-desc');
+  const diceDisplay = document.getElementById('dice-display');
+
+  if (mode === 'd20') {
+    btnD20.classList.add('active');
+    btnD6.classList.remove('active');
+    titleDisplay.innerText = "Modalità D20 Attiva";
+    descDisplay.innerText = "Clicca su LANCIA DADO per estrarre l'imprevisto.";
+  } else {
+    btnD6.classList.add('active');
+    btnD20.classList.remove('active');
+    titleDisplay.innerText = "Modalità D6 Attiva";
+    descDisplay.innerText = "Clicca su LANCIA DADO per l'esito mercato/bilancio.";
+  }
+
+  diceDisplay.innerText = "?";
 }
 
-.card {
-  background: rgba(20, 20, 20, 0.95);
-  border: 2px solid #00ff88;
-  border-radius: 16px;
-  padding: 20px;
-  width: 380px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-}
+function executeRoll() {
+  const diceDisplay = document.getElementById('dice-display');
+  const rollBtn = document.getElementById('roll-button');
+  const titleDisplay = document.getElementById('result-title');
+  const descDisplay = document.getElementById('result-desc');
 
-h1 {
-  font-size: 1.1rem;
-  color: #00ff88;
-  margin-top: 0;
-  margin-bottom: 15px;
-}
+  const maxLimit = currentDiceMode === 'd20' ? 20 : 6;
+  const currentDataset = currentDiceMode === 'd20' ? databaseD20 : databaseD6;
 
-.mode-selector {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
+  rollBtn.disabled = true;
+  diceDisplay.classList.add('animating');
 
-.tab-btn {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border: 1px solid #00ff88;
-  padding: 8px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  cursor: pointer;
-}
+  setTimeout(() => {
+    const rolledNumber = Math.floor(Math.random() * maxLimit) + 1;
+    
+    diceDisplay.classList.remove('animating');
+    diceDisplay.innerText = rolledNumber;
 
-.tab-btn.active {
-  background: #00ff88;
-  color: #101010;
-  font-weight: bold;
-}
+    const outcome = currentDataset.find(item => rolledNumber >= item.min && rolledNumber <= item.max);
 
-#dice-display {
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin: 10px 0;
-  color: #fff;
-}
+    if (outcome) {
+      titleDisplay.innerText = `[${rolledNumber}] ${outcome.title}`;
+      descDisplay.innerText = outcome.desc;
+    }
 
-.rolling {
-  animation: spin 0.4s infinite linear;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg) scale(1.2); }
-  100% { transform: rotate(360deg) scale(1.2); }
-}
-
-#roll-btn {
-  background-color: #00ff88;
-  color: #101010;
-  border: none;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-}
-
-#roll-btn:hover {
-  background-color: #00cc66;
-}
-
-#result-box {
-  margin-top: 15px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 12px;
-  border-radius: 8px;
-  min-height: 75px;
-}
-
-#title {
-  font-size: 1.05rem;
-  margin: 0 0 6px 0;
-  color: #00ff88;
-}
-
-#description {
-  font-size: 0.9rem;
-  margin: 0;
-  color: #dddddd;
+    rollBtn.disabled = false;
+  }, 700);
 }
