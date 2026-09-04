@@ -2,26 +2,35 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Imprevisti FC27 - Live</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generatore Dadi FC27</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <div class="card">
-    <h1>FC27 - GENERATORE DADI</h1>
-    
-    <!-- Selettore modalità -->
-    <div class="mode-selector">
-      <button id="tab-d20" class="tab-btn active" onclick="switchTab('d20')">D20 (Mensile)</button>
-      <button id="tab-d6" class="tab-btn" onclick="switchTab('d6')">D6 (Mercato)</button>
+    <div class="card-header">
+      <h1>FC27 - GENERATORE DADI</h1>
     </div>
 
-    <div id="dice-display">?</div>
-    
-    <button id="roll-btn" onclick="rollCurrentDice()">LANCIA DADO</button>
-    
-    <div id="result-box">
-      <h2 id="title">Seleziona e lancia</h2>
-      <p id="description">L'esito comparirà qui.</p>
+    <!-- Selettore di Modalità -->
+    <div class="mode-selector">
+      <button id="btn-mode-d20" class="tab-btn active" onclick="setMode('d20')">D20 (Mensile)</button>
+      <button id="btn-mode-d6" class="tab-btn" onclick="setMode('d6')">D6 (Mercato)</button>
+    </div>
+
+    <!-- Display Dado -->
+    <div class="dice-container">
+      <div id="dice-display">?</div>
+    </div>
+
+    <!-- Pulsante di Lancio -->
+    <button id="roll-button" onclick="executeRoll()">LANCIA DADO</button>
+
+    <!-- Box Risultato -->
+    <div id="result-box" class="result-container">
+      <div id="result-title" class="title-text">Modalità D20 Attiva</div>
+      <div id="result-desc" class="desc-text">Clicca su LANCIA DADO per estrarre l'imprevisto.</div>
     </div>
   </div>
 
