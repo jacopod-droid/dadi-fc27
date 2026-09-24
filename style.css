@@ -1,0 +1,80 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: transparent; /* Utile per trasparenza su OBS */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.card {
+  background: rgba(20, 20, 20, 0.95);
+  border: 2px solid #00ff88;
+  border-radius: 16px;
+  padding: 24px;
+  width: 380px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+h1 {
+  font-size: 1.2rem;
+  color: #00ff88;
+  margin-top: 0;
+}
+
+#dice-display {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin: 15px 0;
+  color: #fff;
+  transition: transform 0.2s ease;
+}
+
+.rolling {
+  animation: spin 0.4s infinite linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1.2); }
+}
+
+button {
+  background-color: #00ff88;
+  color: #101010;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background-color: #00cc66;
+  transform: scale(1.05);
+}
+
+#result-box {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 8px;
+  min-height: 80px;
+}
+
+#title {
+  font-size: 1.1rem;
+  margin: 0 0 8px 0;
+  color: #00ff88;
+}
+
+#description {
+  font-size: 0.95rem;
+  margin: 0;
+  color: #dddddd;
+}
